@@ -1,0 +1,197 @@
+# Autocomplete Address
+
+## AutocompleteAddress Component
+---
+
+This is basically a `Typeahead` enriched by suggestions from map service.
+
+### Props
+
+Following is a list of all props used by `AutocompleteAddress`, all other props are passed forward to `Typeahead` component.
+
+
+#### `callbackOnFetch` (deprecated)
+
+Called whenever the map service responds with new suggestions.
+The shape of data may vary based on Map module used.
+
+Deprecated in favor of `onUpdate`.
+
+
+#### `handleSuggestionSelection` (deprecated)
+
+Called whenever the user selects one of the `Typeahead` options.
+The shape of data may vary based on Map module used.
+
+Includes an identifier in order to further query location details for purposes such as Geocoding.
+
+Deprecated in favor of `onUpdate`.
+
+
+#### `mapModule`
+
+An instance of MapModule, used internally by MapService.
+
+It's important to keep the reference to this instance and pass that instead of recreating the object on every render.
+Either instantiate it in the constructor and keep inside `this` reference or use the `React.useRef` option.
+
+
+#### `mapServiceOptions`
+
+An options object that allows configuration of internally used MapService.
+
+It has following properties:
+
+##### `searchDebounce`
+
+Number of `ms` to debounce the search call with.
+
+##### `searchDebounce`
+
+The character length of input required to start querying for suggestions.
+
+
+#### `onChange` (deprecated)
+
+Called on every input change.
+The shape of data may varies as this callback is triggered both by `<input />` element itself but also faked whenever the user selects one of the `Typeahead` options.
+
+The fake event has a shape of:
+```js
+{
+    target: {
+        name: string,
+        value: string
+    }
+}
+```
+
+Deprecated in favor of `onUpdate`.
+
+
+#### `onUpdate`
+
+Called on any relevant update in the component.
+
+##### `input_change`
+
+Shape: `{ type: 'input_change', payload: string }`
+
+Payload: Current value of `<input />` element.
+
+Called on every input change.
+
+##### `suggestions_change`
+
+Shape: `{ type: 'suggestions_change', payload: Suggestion[] }`
+
+Payload: Array of suggestions returned from map module.
+
+Called whenever the map service responds with new suggestions.
+
+##### `suggestions_select`
+
+Shape: `{ type: 'suggestions_select', payload: Suggestion }`
+
+Payload: Suggestions returned from map module.
+
+Called whenever the user selects one of the `Typeahead` options.
+
+
+## MapService
+---
+
+MapService serves as a utility interface on top of MapModule.
+
+### API
+
+#### `Constructor`
+> `(mapModule: MapModule, options?: MapServiceOptions) => MapService`
+
+Requires MapModule in order to be instantiated.
+
+**MapServiceOptions**
+- searchDebounce(number) - number of `ms` to debounce search call with. *(Default: 500)*
+- searchThreshold(number) - the character length of input required to start querying for suggestions. *(Default: 4)*
+
+#### `getSuggestionLabel`
+> `(suggestion: Suggestion) => string`
+
+Gets a human-readable label for the suggestion location.
+
+#### `search`
+> `(text: string) => Promise<Suggestion[]>`
+
+Debounced search functionality that returns a list of suggestions.
+
+
+## MapModule
+---
+
+Map module serves as an interface for communicating with map service.
+
+### API
+
+#### `Constructor`
+> `(accessToken: string, options?: MapModuleOptions) => MapModule`
+
+Requires accessToken in order to be instantiated.
+
+**MapModuleOptions**
+Options vary for different modules, search for `defaultOptions` in the desired module file.
+
+#### `formatSearchResult` (Also as `static`)
+> `(searchResult: SearchResult) => Suggestion[]`
+
+Extracts suggestions from Search response.
+
+#### `getSuggestionLabel` (Also as `static`)
+> `(suggestion: Suggestion) => string`
+
+Gets a human-readable label for the suggestion location.
+
+#### `search`
+> `(text: string) => Promise<SearchResult>`
+
+Requests suggestions from map service and returns response data.
+
+
+## CompatibilityLayer
+---
+
+This is a HOC that lives on top of AutocompleteAddress Component, it provides v5 version parity.
+
+If `mapModule` prop is provided, the component behaves as `AutocompleteAddress`, on the other hand if `googleMapsApiKey` is provided it internally creates a GoogleMapModule.
+This component also issues deprecation warnings to the console if deprecated props aree used.
+
+### Props
+
+Following is a list of all props used by `CompatibilityLayer`, all other props are passed forward to `AutocompleteAddress` component.
+
+
+#### `filterInput` (deprecated)
+
+Custom suggestion normalizer, allows to changee the suggestion shape before `handleSuggestionSelection` is called.
+
+
+#### `googleMapsApiKey` (deprecated)
+
+**Either this or `mapModule` prop need to be provided.**
+
+API key for Google Maps services.
+
+Deprecated in favor of `mapModule`.
+
+
+#### `placeFields` (deprecated)
+
+List of fields to be extracteed from geocoded place.
+
+Deprecated in favor of `mapModule`.
+
+
+#### `searchOptions` (deprecated)
+
+Options passed to `google.maps.places.AutocompleteService.getPlacePredictions`
+
+Deprecated in favor of `mapModule`.

@@ -1,0 +1,46 @@
+{
+  "name": "refactor-demo",
+  "version": "0.0.1",
+  "description": "Desc",
+  "main": "index.js",
+  "scripts": {
+    "test:legacy": "jest legacy.*spec.jsx?",
+    "test:refactored": "jest refactored.*spec.jsx?",
+    "test:refactoring": "jest refactoring.*spec.jsx?"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/varholak-peter/refactor-demo.git"
+  },
+  "keywords": [
+    "demo",
+    "refactor",
+    "react"
+  ],
+  "author": "Peter Varholak <peter.varholak@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/varholak-peter/refactor-demo/issues"
+  },
+  "homepage": "https://github.com/varholak-peter/refactor-demo#readme",
+  "dependencies": {
+    "@babel/core": "^7.9.6",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-proposal-object-rest-spread": "^7.9.6",
+    "@babel/plugin-transform-runtime": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
+    "@babel/preset-react": "^7.9.4",
+    "@testing-library/jest-dom": "^5.5.0",
+    "@testing-library/react": "^10.0.3",
+    "axios": "^0.19.2",
+    "babel-jest": "^25.5.1",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
+    "jest": "^25.5.2",
+    "lodash.debounce": "^4.0.8",
+    "prop-types": "^15.7.2",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "sinon": "^9.0.2"
+  }
+}
