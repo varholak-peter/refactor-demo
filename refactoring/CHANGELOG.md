@@ -98,3 +98,17 @@ class MapService {
   async search(text) {}
 }
 ```
+
+## Refactor existing implementation
+
+Now is the time when we replace the current component implementation with the logic we implemented so far.
+
+This also allows us to deprecate parts of previous component API which make no sense in the new context.
+These are the following props:
+
+- filterInput: it is not necessary to filter the input with the newer implemeentation as that logic moved elsewhere.
+- googleMapsApiKey: We now support Mapbox in addition to Google Maps.
+- placeFields: This only makes sense in the context of Google Maps response.
+- searchOptions: This allowed configuration for the Google Maps search functionality but it is not compatible with Mapbox.
+
+We also introduce a new prop `onUpdate` which allows us to utilize the Responsibility Inversion Principle, as such the component itself defines the shape of data it sends to its parent. This is especially important to solve the bug with `onChange` where we simulate a fake event which can lead to undefined behavior.
