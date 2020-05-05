@@ -1,13 +1,20 @@
 import React from "react";
-import { mount, shallow } from "enzyme";
+import { mount } from "enzyme";
+import { fireEvent, render, screen } from "@testing-library/react";
 import AutocompleteAddress from "./index";
+
+const dummySuggestions = [
+  { description: "AAAAabc" },
+  { description: "AAAAdef" },
+  { description: "BBBBabc" },
+  { description: "AAAAghi" },
+];
+const noop = () => {};
 
 describe("<AutocompleteAddress />", () => {
   describe("works as TextInput component", () => {
-    const noop = () => {};
-
-    it("should render consistently", () => {
-      const wrapper = mount(
+    it("should render", () => {
+      render(
         <AutocompleteAddress
           googleMapsApiKey=""
           label="Test Input"
@@ -16,57 +23,32 @@ describe("<AutocompleteAddress />", () => {
           value="o"
         />
       );
-      expect(wrapper).toBeTruthy();
-      wrapper.unmount();
+
+      expect(screen.queryByLabelText("Test Input")).toBeInTheDocument();
     });
 
-    it("should render an <TestInput", () => {
-      const wrapper = shallow(
+    it("should call onChange func on change", () => {
+      const onChangeSpy = jest.fn();
+      render(
         <AutocompleteAddress
           googleMapsApiKey=""
           label="Test Input"
           name="test"
-          onChange={noop}
+          onChange={onChangeSpy}
           value="o"
         />
       );
-      expect(wrapper.find("TextInput").exists()).toBe(true);
-    });
 
-    it("should call handleChange func on change", () => {
-      const changeFunc = jest.fn();
+      fireEvent.change(screen.getByLabelText("Test Input"), {
+        target: { value: "Kobzol" },
+      });
 
-      const wrapper = mount(
-        <AutocompleteAddress
-          googleMapsApiKey=""
-          label="Test Input"
-          name="test"
-          onChange={changeFunc}
-          value="o"
-        />
-      );
-      wrapper.find("input").simulate("change");
-      expect(changeFunc).toHaveBeenCalled();
-      wrapper.unmount();
-    });
-
-    it("should not render an <Typeahead", () => {
-      const wrapper = shallow(
-        <AutocompleteAddress
-          googleMapsApiKey=""
-          label="Test Input"
-          name="test"
-          onChange={noop}
-          value="o"
-        />
-      );
-      expect(wrapper.find("Typeahead").exists()).toBe(false);
-      wrapper.unmount();
+      expect(onChangeSpy).toHaveBeenCalledTimes(1);
     });
   });
 
   describe("works as Typeahead component", () => {
-    const testValue = "o";
+    const testValue = "AAA";
     const changeFunc = jest.fn();
 
     it("should render an <Typeahead", () => {
@@ -76,12 +58,31 @@ describe("<AutocompleteAddress />", () => {
           label="Test Input"
           name="test"
           onChange={changeFunc}
-          value={testValue.test}
+          value={testValue}
         />
       );
       wrapper.setState({ googleMapsApiReady: true });
       expect(wrapper.find("Typeahead").exists()).toBe(true);
       wrapper.unmount();
+    });
+
+    it("renders no suggestions when none are available", () => {
+      render(
+        <AutocompleteAddress
+          googleMapsApiKey=""
+          label="Test Input"
+          name="test"
+          onChange={noop}
+          value=""
+        />
+      );
+
+      fireEvent.focus(screen.getByLabelText("Test Input"));
+
+      expect(screen.queryByText("AAAAabc")).toBeNull();
+      expect(screen.queryByText("AAAAdef")).toBeNull();
+      expect(screen.queryByText("AAAAghi")).toBeNull();
+      expect(screen.queryByText("BBBBabc")).toBeNull();
     });
 
     it("should call handleSuggestionSelection func on select", () => {
@@ -91,11 +92,11 @@ describe("<AutocompleteAddress />", () => {
           label="Test Input"
           name="test"
           onChange={changeFunc}
-          value={testValue.test}
+          value={"A"}
         />
       );
       wrapper.setState({
-        suggestions: ["1", "2", "3"],
+        suggestions: dummySuggestions,
         googleMapsApiReady: true,
       });
       wrapper.find("input").simulate("keydown", {
@@ -124,7 +125,7 @@ describe("<AutocompleteAddress />", () => {
           name="test"
           onChange={customOnChange}
           pattern="[0-9]+"
-          value={testValue.test}
+          value={testValue}
         />
       );
       wrapper.find("input").instance().value = "New York |@#|¢|@#";
