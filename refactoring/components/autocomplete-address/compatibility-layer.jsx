@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import _deprecationWarning from "../../utils/deprecation-warning";
 
-import AutocompleteAddress from "./index";
+import AutocompleteAddress from "./AutocompleteAddress";
 import GoogleMapsModule from "./map-modules/google-maps";
 
 const deprecationWarning = _deprecationWarning(AutocompleteAddress.name);

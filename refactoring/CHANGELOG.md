@@ -120,3 +120,11 @@ Once we are finished with the refactor we can create a compatiblity layer which 
 Here we need to reintroduce the deprecated props and add a deprecation warning to the console.
 
 We also need to make a decision between exporting the new implementation in its own context or exporting both new and legacy as a single component. If we chose the latter option we need to make sure to have some logic in place which allows us to differentiate between new and legacy components.
+
+## Cleanup & Exporting
+
+Now is the time when we can do some final cleanup, fix the file location and namings, etc.
+
+We also need to define the contents of the `index.js` export file.
+
+This is also the moment when we provide the documentation for future developers with usage info and architectural decisions.
