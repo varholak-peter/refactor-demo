@@ -65,3 +65,16 @@ class GoogleMapsModule {
 ```
 
 **Note:** We prefix the private method with `private` here but this is not required. We could use a symbol such as `$` or `_` to convey that the method is private but ultimately nothing stops us from using them as if they are public due to JavaScript implementation of classes.
+
+## Implement new (Mapbox)
+
+We can now start implementing the Mapbox service akin to Google Maps.
+
+One obstacle we need to overcome is the fact that both services have different result shape. Which gives us two options:
+
+- Create a normalizer that standarizes the responses into a common shape
+- Give module ownership to the consumer, which they can then utilize to manipulate the result
+
+We opt in for the latter option as Google Maps & Mapbox don't have sufficient overlap for our use case and we want to give the consumer the control over data they consume.
+
+It also allows us to future-proof this better as a different service added in the future may not have an overlap with the normalized response.
