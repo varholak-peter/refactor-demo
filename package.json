@@ -4,6 +4,7 @@
   "description": "Desc",
   "main": "index.js",
   "scripts": {
+    "test": "jest",
     "test:legacy": "jest legacy.*spec.jsx?",
     "test:refactored": "jest refactored.*spec.jsx?",
     "test:refactoring": "jest refactoring.*spec.jsx?"
