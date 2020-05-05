@@ -29,27 +29,33 @@ Change `<AutocompleteAddress />` map service from [Google Maps](https://develope
 
 ## How this repository works
 
+The refactoring part lives in the `refactoring` branch. (`git checkout refactoring`)
+
+The steps to follow are described in the `refactoring/CHANGELOG.md`. Each step is a separate commit in that branch so you can explore how the code changes over time by checkouting to different commits.
+
+### Folder structure
+
 This repository is split into 4 folders: `legacy`, `refactored`, `refactoring` and `shared`.
 
-### Legacy
+#### Legacy
 
 Legacy folder represents the starting state of the codebase for reference.
 
 This is a minimal representation of the `src` folder in a component library.
 
-### Refactored
+#### Refactored
 
 Refactored folder represents the final state of the codebase for reference.
 
 This is a minimal representation of the `src` folder in a component library.
 
-### Refactoring
+#### Refactoring
 
 Refactoring folder represents the step by step process of refactoring according to [task specification](#Task-specification).
 
 This is a minimal representation of the `src` folder in a component library.
 
-### Shared
+#### Shared
 
 Shared folder contains dummy mocks of dependencies, which the rest of the codebase uses.
 
