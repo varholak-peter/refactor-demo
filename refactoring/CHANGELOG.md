@@ -112,3 +112,11 @@ These are the following props:
 - searchOptions: This allowed configuration for the Google Maps search functionality but it is not compatible with Mapbox.
 
 We also introduce a new prop `onUpdate` which allows us to utilize the Responsibility Inversion Principle, as such the component itself defines the shape of data it sends to its parent. This is especially important to solve the bug with `onChange` where we simulate a fake event which can lead to undefined behavior.
+
+## Backwards compatibility
+
+Once we are finished with the refactor we can create a compatiblity layer which will have the same API as the component when we started.
+
+Here we need to reintroduce the deprecated props and add a deprecation warning to the console.
+
+We also need to make a decision between exporting the new implementation in its own context or exporting both new and legacy as a single component. If we chose the latter option we need to make sure to have some logic in place which allows us to differentiate between new and legacy components.
