@@ -78,3 +78,23 @@ One obstacle we need to overcome is the fact that both services have different r
 We opt in for the latter option as Google Maps & Mapbox don't have sufficient overlap for our use case and we want to give the consumer the control over data they consume.
 
 It also allows us to future-proof this better as a different service added in the future may not have an overlap with the normalized response.
+
+## Implement new (Map Service)
+
+Map service is the api layer standing between the component itself and the Map Module.
+
+It provides different optimizations that are not related to a specific module but shouldn't be the responsibility of the component.
+
+This time we look into how the component itself uses the data from the service and construct the API accordingly.
+
+```js
+class MapService {
+  constructor(mapModule, options) {}
+
+  privateSearch(text, cb) {}
+
+  getSuggestionLabel(suggestion) {}
+
+  async search(text) {}
+}
+```
